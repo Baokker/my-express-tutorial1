@@ -47,4 +47,5 @@ VueX Vue Router
 # ChatGPT
 
 编写过程中感谢ChatGPT提供的大力支持，非常好的老师orz
+
 如何正确地提问也是一门学问
