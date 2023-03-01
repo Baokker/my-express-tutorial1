@@ -1,0 +1,12 @@
+# ignore mac files
+.DS_Store
+
+# Editor directories and files
+*/.vscode
+*/.idea
+*/.vscode
+*/*.suo
+*/*.ntvs*
+*/*.njsproj
+*/*.sln
+*/*.sw?

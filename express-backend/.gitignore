@@ -1,0 +1,4 @@
+# store mongodb information
+.env 
+
+node_modules/
