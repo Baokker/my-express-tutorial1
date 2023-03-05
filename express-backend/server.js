@@ -43,7 +43,7 @@ app.post("/register", async (req, res) => {
   }
 });
 
-// TODO: why use spring boot more than express currently?
+// why use spring boot more than express currently?
 app.post("/login", async (req, res) => {
   const user = await User.findOne({ username: req.body.username });
   if (!user) {
@@ -53,9 +53,10 @@ app.post("/login", async (req, res) => {
   if (await bcrypt.compare(req.body.password, user.password)) {
     const token = jwt.sign(
       { username: user.username, isAdmin: user.isAdmin },
-      "secret"
+      "secret",
+      { expiresIn: "1h" }
     );
-    res.status(200).json({token});
+    res.status(200).json({ token });
   } else {
     res.status(401).send("Unauthorized"); // unauthorized
   }
@@ -64,8 +65,7 @@ app.post("/login", async (req, res) => {
 app.get("/dashboard", authorize, (req, res) => {
   if (req.user.isAdmin) {
     return res.json({ message: "Admin dashboard" });
-  }
-  else {
+  } else {
     return res.json({ message: "User dashboard" });
   }
 });
@@ -78,8 +78,12 @@ function authorize(req, res, next) {
     req.user = decodedToken;
 
     next();
-  } catch {
-    res.status(401).send("Invalid token");
+  } catch (err) {
+    if (err instanceof jwt.TokenExpiredError) {
+      res.status(401).send("Token Expired");
+    } else {
+      console.log("Invalid Token");
+    }
   }
 }
 
